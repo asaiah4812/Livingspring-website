@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { usePaystackPayment } from "react-paystack";
 
 // Define types for the component props
@@ -67,10 +67,10 @@ const PaystackWrapper: React.FC<PaystackWrapperProps> = ({
   const initializePayment = usePaystackPayment(config);
 
   // Auto-trigger payment once the component is mounted
-  React.useEffect(() => {
-    // @ts-ignore - TypeScript doesn't recognize the onSuccess and onClose callbacks
+  useEffect(() => {
+    // @ts-expect-error - TypeScript doesn't recognize the onSuccess and onClose callbacks
     initializePayment(onSuccess, onClose);
-  }, []);
+  }, [initializePayment, onSuccess, onClose]);
 
   // This component doesn't render anything visible
   return null;

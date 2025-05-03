@@ -129,8 +129,6 @@ const Carousel: React.FC<CarouselProps> = ({
   }, [emblaApi, onSelect]);
 
   const {
-    selectedIndex: dotButtonSelectedIndex,
-    scrollSnaps: dotButtonScrollSnaps,
     onDotButtonClick,
   } = useDotButton(emblaApi);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -579,7 +577,7 @@ export const ThumsSlider: React.FC = () => {
   return (
     <div className="overflow-hidden mt-2" ref={emblaThumbsRef}>
       <div className="flex flex-row gap-2">
-        {slidesArr.map((slide: string, index: number) => (
+        {slidesArr.map((slide, index) => (
           <div
             key={`thumb-${index}`}
             className={`min-w-0 w-full xl:h-24 aspect-auto border-2 rounded-md ${
