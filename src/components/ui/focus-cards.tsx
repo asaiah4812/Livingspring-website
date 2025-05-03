@@ -3,8 +3,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { ButtonHover, ButtonHover1, ButtonHover2 } from "../button/hoverButton";
-// import Image from "next/image";
+import { ButtonHover } from "../button/hoverButton";
 
 export const Card = React.memo(
   ({
@@ -13,7 +12,7 @@ export const Card = React.memo(
     hovered,
     setHovered,
   }: {
-    card: any;
+    card: Card;
     index: number;
     hovered: number | null;
     setHovered: React.Dispatch<React.SetStateAction<number | null>>;
@@ -26,12 +25,7 @@ export const Card = React.memo(
         hovered !== null && hovered !== index && "blur-sm scale-[0.98]"
       )}
     >
-      <Image
-        src={card.src}
-        alt={card.title}
-        fill
-        className="object-cover"
-      />
+      <Image src={card.src} alt={card.title} fill className="object-cover" />
       <div
         className={cn(
           "absolute inset-0 bg-black/50 flex items-end py-8 px-4 transition-opacity duration-300",

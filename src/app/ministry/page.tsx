@@ -1,14 +1,14 @@
-import ThumnailSlider, { SliderModal } from '@/components/card/GalleryTab';
-import CurveHero from '@/components/section/CurveHero'
-import React from 'react'
+import React from "react";
+import CurveHero from "@/components/section/CurveHero";
+import ThumnailSlider from "@/components/card/GalleryTab";
 
 interface OfferProps {
-    id:number;
-    head:string;
-    content:string;
+  id: number;
+  head: string;
+  content: string;
 }
 
-const Offer:OfferProps[] = [
+const Offer: OfferProps[] = [
   {
     id: 1,
     head: "Weekly Fellowship Meetings",
@@ -29,12 +29,12 @@ const Offer:OfferProps[] = [
 ];
 
 interface ActivityProps {
-    id:number;
-    title: string;
-    time:string;
-    street?:string | null;
-    location?:string | null;
-    state?: string | null;
+  id: number;
+  title: string;
+  time: string;
+  street?: string | null;
+  location?: string | null;
+  state?: string | null;
 }
 
 const Activities: ActivityProps[] = [
@@ -54,7 +54,7 @@ const Activities: ActivityProps[] = [
     time: "Mondays – 05:00pm (On Campus)",
     street: "",
     location: "",
-    state: ""
+    state: "",
   },
 ];
 
@@ -76,8 +76,8 @@ const Ministry = () => {
           </h2>
           <p className="pb-3">
             At Living Spring, our Youth Ministry serves as a vibrant hub for
-            students across universities and polytechnics. It’s a place where
-            young minds are nurtured, faith is deepened, and leadership
+            students across universities and polytechnics. It&lsquo;s a place
+            where young minds are nurtured, faith is deepened, and leadership
             qualities are honed.
           </p>
           <h2 className="font-semibold text-xl">What We Offer:</h2>
@@ -108,11 +108,10 @@ const Ministry = () => {
         </div>
       </section>
       <section className="py-8 container mx-auto">
-        {/* <SliderModal item={} /> */}
-        <ThumnailSlider/>
+        <ThumnailSlider />
       </section>
     </div>
   );
-}
+};
 
-export default Ministry
+export default Ministry;

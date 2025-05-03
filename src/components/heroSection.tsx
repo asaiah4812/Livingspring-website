@@ -93,7 +93,7 @@ export default function HeroSection() {
                     className="hover:bg-background dark:hover:border-t-border bg-muted group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md transition-colors duration-300 border-t-white/5 shadow-zinc-950"
                   >
                     <span className="text-foreground text-sm">
-                      Living Right and Lifing Lives
+                      Living Right Lifing Lives
                     </span>
                     <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
 
@@ -116,7 +116,7 @@ export default function HeroSection() {
                   as="h1"
                   className="mt-8 text-balance text-white text-4xl fontMe md:text-5xl lg:mt-16 xl:text-7xl"
                 >
-                  Welcome to Living Spring Assembly
+                  Welcome to Living Spring Christian Assembly
                 </TextEffect>
                 <TextEffect
                   per="line"
@@ -127,7 +127,7 @@ export default function HeroSection() {
                   className="mx-auto mt-8 max-w-2xl herofont text-white text-balance text-lg"
                 >
                   We exists to Glorify God, Helping people experience God Join
-                  with others to fulfill Christ's mission in the work.
+                  with others to fulfill Christ&lsquo;s mission in the work.
                 </TextEffect>
 
                 <AnimatedGroup

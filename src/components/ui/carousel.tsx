@@ -33,27 +33,26 @@ interface CarouselProps {
   isAutoPlay?: boolean;
   isScale?: boolean;
 }
-interface ThumbnailSlide {
-  src: string;
-  alt: string;
-}
+
 interface CarouselContextType {
+  embla: EmblaCarouselType | null | undefined;
+  selectedIndex: number;
+  scrollSnaps: number[];
+  onDotButtonClick: (index: number) => void;
+  scrollTo: (index: number) => void;
+  isScale?: boolean;
+  slidesArr: string[];
+  setSlidesArr: React.Dispatch<React.SetStateAction<string[]>>;
+  emblaThumbsRef: ReturnType<typeof useEmblaCarousel>[0];
+  onThumbClick: (index: number) => void;
+  carouselId: string;
   prevBtnDisabled: boolean;
   nextBtnDisabled: boolean;
   onPrevButtonClick: () => void;
   onNextButtonClick: () => void;
-  selectedIndex: any;
-  scrollSnaps: any;
-  onDotButtonClick: any;
-  scrollProgress: any;
-  selectedSnap: any;
-  snapCount: any;
-  isScale: boolean;
-  slidesrArr: ThumbnailSlide[];
-  setSlidesArr: any;
-  emblaThumbsRef: any;
-  onThumbClick: any;
-  carouselId: string;
+  scrollProgress: number;
+  selectedSnap: number;
+  snapCount: number;
 }
 
 const CarouselContext = createContext<CarouselContextType | undefined>(
@@ -82,7 +81,7 @@ const Carousel: React.FC<CarouselProps> = ({
   isAutoPlay = false,
 }) => {
   const carouselId = useId();
-  const [slidesrArr, setSlidesArr] = useState<Element[]>([]);
+  const [slidesArr, setSlidesArr] = useState<string[]>([]);
   const plugins = [];
 
   if (activeSlider) {
@@ -101,11 +100,12 @@ const Carousel: React.FC<CarouselProps> = ({
     );
   }
   const [emblaRef, emblaApi] = useEmblaCarousel(options, plugins);
-  const [selectedThumbIndex, setSelectedThumbIndex] = useState(0);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
     dragFree: true,
   });
+  const [selectedIndex] = useState(0);
+  const [scrollSnaps] = useState<number[]>([]);
 
   const onThumbClick = useCallback(
     (index: number) => {
@@ -117,19 +117,22 @@ const Carousel: React.FC<CarouselProps> = ({
 
   const onSelect = useCallback(() => {
     if (!emblaApi || !emblaThumbsApi) return;
-    setSelectedThumbIndex(emblaApi.selectedScrollSnap()); // Use setSelectedThumbIndex here
     emblaThumbsApi.scrollTo(emblaApi.selectedScrollSnap());
-  }, [emblaApi, emblaThumbsApi, setSelectedThumbIndex]);
+  }, [emblaApi, emblaThumbsApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
+
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
-  const { selectedIndex, scrollSnaps, onDotButtonClick } =
-    useDotButton(emblaApi);
+  const {
+    selectedIndex: dotButtonSelectedIndex,
+    scrollSnaps: dotButtonScrollSnaps,
+    onDotButtonClick,
+  } = useDotButton(emblaApi);
   const [scrollProgress, setScrollProgress] = useState(0);
   const {
     prevBtnDisabled,
@@ -240,22 +243,28 @@ const Carousel: React.FC<CarouselProps> = ({
   return (
     <CarouselContext.Provider
       value={{
+        embla: emblaApi,
+        selectedIndex,
+        scrollSnaps,
+        onDotButtonClick,
+        scrollTo: (index: number) => {
+          if (emblaApi) {
+            emblaApi.scrollTo(index);
+          }
+        },
+        isScale,
+        slidesArr,
+        setSlidesArr,
+        emblaThumbsRef,
+        onThumbClick,
+        carouselId,
         prevBtnDisabled,
         nextBtnDisabled,
         onPrevButtonClick,
         onNextButtonClick,
-        selectedIndex,
-        scrollSnaps,
-        setSlidesArr,
-        onDotButtonClick,
         scrollProgress,
         selectedSnap,
         snapCount,
-        carouselId,
-        isScale,
-        emblaThumbsRef,
-        onThumbClick,
-        slidesrArr,
       }}
     >
       <div
@@ -296,13 +305,16 @@ export const Slider: React.FC<SliderProps> = ({
   thumnailSrc,
 }) => {
   const { isScale, setSlidesArr } = useCarouselContext();
-  // console.log(thumnailSrc)
 
   const addImgToSlider = useCallback(() => {
-    setSlidesArr((prev: any) => {
-      // Prevent adding duplicate images
-      return [...prev, thumnailSrc];
-    });
+    if (thumnailSrc) {
+      setSlidesArr((prev) => {
+        if (!prev.includes(thumnailSrc)) {
+          return [...prev, thumnailSrc];
+        }
+        return prev;
+      });
+    }
   }, [setSlidesArr, thumnailSrc]);
 
   useEffect(() => {
@@ -311,13 +323,7 @@ export const Slider: React.FC<SliderProps> = ({
 
   return (
     <div className={cn("min-w-0 flex-grow-0 flex-shrink-0", className)}>
-      {isScale ? (
-        <>
-          <div className="slider_content">{children}</div>
-        </>
-      ) : (
-        <>{children}</>
-      )}
+      {isScale ? <div className="slider_content">{children}</div> : children}
     </div>
   );
 };
@@ -329,7 +335,7 @@ export const SliderPrevButton = ({
   children?: ReactNode;
   className?: string;
 }) => {
-  const { onPrevButtonClick, prevBtnDisabled }: any = useCarouselContext();
+  const { onPrevButtonClick, prevBtnDisabled } = useCarouselContext();
   return (
     <button
       className={cn("", className)}
@@ -348,7 +354,7 @@ export const SliderNextButton = ({
   children?: ReactNode;
   className?: string;
 }) => {
-  const { onNextButtonClick, nextBtnDisabled }: any = useCarouselContext();
+  const { onNextButtonClick, nextBtnDisabled } = useCarouselContext();
   return (
     <>
       <button
@@ -363,11 +369,11 @@ export const SliderNextButton = ({
   );
 };
 export const SliderProgress = ({ className }: { className?: string }) => {
-  const { scrollProgress }: any = useCarouselContext();
+  const { scrollProgress } = useCarouselContext();
   return (
     <div
       className={cn(
-        "  bg-gray-500 relative rounded-md h-2 justify-end items-center w-96 max-w-[90%] overflow-hidden",
+        "bg-gray-500 relative rounded-md h-2 justify-end items-center w-96 max-w-[90%] overflow-hidden",
         className
       )}
     >
@@ -399,9 +405,9 @@ export const SliderSnapDisplay = ({ className }: { className?: string }) => {
       <motion.div
         key={selectedSnap}
         custom={direction}
-        initial={(d: number) => ({ y: d * 20, opacity: 0 })}
+        initial={{ y: direction * 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        exit={(d: number) => ({ y: d * -20, opacity: 0 })}
+        exit={{ y: direction * -20, opacity: 0 }}
       >
         {selectedSnap + 1}
       </motion.div>
@@ -416,19 +422,19 @@ export const SliderDotButton = ({
   className?: string;
   activeclass?: string;
 }) => {
-  const { selectedIndex, scrollSnaps, onDotButtonClick, carouselId }: any =
+  const { selectedIndex, scrollSnaps, onDotButtonClick, carouselId } =
     useCarouselContext();
   return (
     <div className={cn("flex", className)}>
       <div className="flex gap-2">
-        {scrollSnaps.map((_: any, index: React.Key | null | undefined) => (
+        {scrollSnaps.map((_, index) => (
           <button
             type="button"
             key={index}
             onClick={() => onDotButtonClick(index)}
-            className={`relative inline-flex  p-0 m-0 w-10 h-2 `}
+            className="relative inline-flex p-0 m-0 w-10 h-2"
           >
-            <div className=" bg-gray-500/40  h-2 rounded-full w-10 "></div>
+            <div className="bg-gray-500/40 h-2 rounded-full w-10" />
             {index === selectedIndex && (
               <AnimatePresence mode="wait">
                 <motion.div
@@ -567,14 +573,13 @@ export const useSelectedSnapDisplay = (
 };
 
 export const ThumsSlider: React.FC = () => {
-  const { emblaThumbsRef, slidesrArr, selectedIndex, onThumbClick } =
+  const { emblaThumbsRef, slidesArr, selectedIndex, onThumbClick } =
     useCarouselContext();
-  // console.log(slidesrArr);
 
   return (
     <div className="overflow-hidden mt-2" ref={emblaThumbsRef}>
       <div className="flex flex-row gap-2">
-        {slidesrArr.map((slide, index) => (
+        {slidesArr.map((slide: string, index: number) => (
           <div
             key={`thumb-${index}`}
             className={`min-w-0 w-full xl:h-24 aspect-auto border-2 rounded-md ${
@@ -590,7 +595,7 @@ export const ThumsSlider: React.FC = () => {
               className="w-full h-full object-cover rounded-sm"
               width={400}
               height={400}
-              alt={slide.alt || `Thumbnail ${index + 1}`}
+              alt={`Thumbnail ${index + 1}`}
             />
           </div>
         ))}

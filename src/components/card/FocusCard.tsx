@@ -23,11 +23,11 @@ export function FocusCardsDemo() {
       src: "/moment/img3.jpg",
     },
     {
-      title: "The First Rule",
+      title: "Church Service",
       src: "/moment/img.jpg",
     },
     {
-      title: "The First Rule",
+      title: "Church Members",
       src: "/card/members1.png",
     },
     {

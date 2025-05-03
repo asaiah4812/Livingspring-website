@@ -1,6 +1,6 @@
 'use client';
 import { ReactNode } from 'react';
-import { motion, Variants } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 import React from 'react';
 
 export type PresetType =
@@ -23,8 +23,8 @@ export type AnimatedGroupProps = {
     item?: Variants;
   };
   preset?: PresetType;
-  as?: React.ElementType;
-  asChild?: React.ElementType;
+  as?: 'div' | 'span' | 'ul' | 'ol' | 'li' | 'section' | 'article' | 'header' | 'footer' | 'main' | 'nav';
+  asChild?: 'div' | 'span' | 'li' | 'p';
 };
 
 const defaultContainerVariants: Variants = {
@@ -115,29 +115,159 @@ function AnimatedGroup({
   const containerVariants = variants?.container || selectedVariants.container;
   const itemVariants = variants?.item || selectedVariants.item;
 
-  const MotionComponent = React.useMemo(
-    () => motion.create(as as keyof JSX.IntrinsicElements),
-    [as]
-  );
-  const MotionChild = React.useMemo(
-    () => motion.create(asChild as keyof JSX.IntrinsicElements),
-    [asChild]
-  );
-
-  return (
-    <MotionComponent
-      initial='hidden'
-      animate='visible'
-      variants={containerVariants}
-      className={className}
-    >
-      {React.Children.map(children, (child, index) => (
-        <MotionChild key={index} variants={itemVariants}>
-          {child}
-        </MotionChild>
-      ))}
-    </MotionComponent>
-  );
+  // Render different motion components based on the 'as' prop
+  if (as === 'div') {
+    return (
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className={className}
+      >
+        {React.Children.map(children, (child, index) => {
+          if (asChild === 'div') {
+            return (
+              <motion.div key={index} variants={itemVariants}>
+                {child}
+              </motion.div>
+            );
+          } else if (asChild === 'span') {
+            return (
+              <motion.span key={index} variants={itemVariants}>
+                {child}
+              </motion.span>
+            );
+          } else if (asChild === 'li') {
+            return (
+              <motion.li key={index} variants={itemVariants}>
+                {child}
+              </motion.li>
+            );
+          } else {
+            return (
+              <motion.p key={index} variants={itemVariants}>
+                {child}
+              </motion.p>
+            );
+          }
+        })}
+      </motion.div>
+    );
+  } else if (as === 'span') {
+    return (
+      <motion.span
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className={className}
+      >
+        {React.Children.map(children, (child, index) => {
+          if (asChild === 'div') {
+            return (
+              <motion.div key={index} variants={itemVariants}>
+                {child}
+              </motion.div>
+            );
+          } else if (asChild === 'span') {
+            return (
+              <motion.span key={index} variants={itemVariants}>
+                {child}
+              </motion.span>
+            );
+          } else if (asChild === 'li') {
+            return (
+              <motion.li key={index} variants={itemVariants}>
+                {child}
+              </motion.li>
+            );
+          } else {
+            return (
+              <motion.p key={index} variants={itemVariants}>
+                {child}
+              </motion.p>
+            );
+          }
+        })}
+      </motion.span>
+    );
+  } else if (as === 'ul') {
+    return (
+      <motion.ul
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className={className}
+      >
+        {React.Children.map(children, (child, index) => {
+          if (asChild === 'div') {
+            return (
+              <motion.div key={index} variants={itemVariants}>
+                {child}
+              </motion.div>
+            );
+          } else if (asChild === 'span') {
+            return (
+              <motion.span key={index} variants={itemVariants}>
+                {child}
+              </motion.span>
+            );
+          } else if (asChild === 'li') {
+            return (
+              <motion.li key={index} variants={itemVariants}>
+                {child}
+              </motion.li>
+            );
+          } else {
+            return (
+              <motion.p key={index} variants={itemVariants}>
+                {child}
+              </motion.p>
+            );
+          }
+        })}
+      </motion.ul>
+    );
+  } else {
+    // Default to div if the 'as' prop is not recognized
+    return (
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className={className}
+      >
+        {React.Children.map(children, (child, index) => {
+          if (asChild === 'div') {
+            return (
+              <motion.div key={index} variants={itemVariants}>
+                {child}
+              </motion.div>
+            );
+          } else if (asChild === 'span') {
+            return (
+              <motion.span key={index} variants={itemVariants}>
+                {child}
+              </motion.span>
+            );
+          } else if (asChild === 'li') {
+            return (
+              <motion.li key={index} variants={itemVariants}>
+                {child}
+              </motion.li>
+            );
+          } else {
+            return (
+              <motion.p key={index} variants={itemVariants}>
+                {child}
+              </motion.p>
+            );
+          }
+        })}
+      </motion.div>
+    );
+  }
 }
 
 export { AnimatedGroup };
+
+

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Carousel, Card } from "@/components/ui/apple-card-carousel";
+import Image from "next/image";
 
 export function CardHero() {
   const cards = data.map((card, index) => (
@@ -11,7 +12,7 @@ export function CardHero() {
   return (
     <div className="w-full h-full bg-gradient-to-br from-orange-300 to-orange-100 py-20">
       <div className="text-center">
-      <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-5xl font-bold text-neutral-800 dark:text-neutral-200 font-sans">
+      <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-5xl font-bold text-neutral-800 py-4 font-sans">
         Your Faith Walk
       </h2>
       <span className="max-w-7xl pl-4 mx-auto md:text-2xl font-regular text-neutral-800 dark:text-neutral-200">
@@ -43,11 +44,11 @@ const DummyContent = () => {
               Langotiya jeetu ka mara hua yaar is ready to capture every
               thought.
             </p>
-            <img
+            <Image
               src="https://assets.aceternity.com/macbook.png"
               alt="Macbook mockup from Aceternity UI"
-              height="500"
-              width="500"
+              height={500}
+              width={500}
               className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
             />
           </div>

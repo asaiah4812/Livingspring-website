@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { cn } from "@/lib/utils";
 import createGlobe from "cobe";
@@ -7,7 +7,6 @@ import { motion } from "motion/react";
 import { IconBrandYoutubeFilled } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-
 
 export function FeaturesSectionDemo() {
   const features = [
@@ -20,7 +19,7 @@ export function FeaturesSectionDemo() {
         "col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800",
     },
     {
-      title: "Listen to God’s Word for You.",
+      title: "Listen to God's Word for You.",
       description:
         "Capture stunning photos effortlessly using our advanced AI technology.",
       skeleton: <SkeletonTwo />,
@@ -161,6 +160,9 @@ export const SkeletonTwo = () => {
     "/jos/lisca5.jpg",
   ];
 
+  // Predefined rotation angles
+  const rotationAngles = [-5, 3, -2, 4, -3];
+
   const imageVariants = {
     whileHover: {
       scale: 1.1,
@@ -175,14 +177,13 @@ export const SkeletonTwo = () => {
   };
   return (
     <div className="relative flex flex-col items-start p-8 gap-10 h-full overflow-hidden">
-      {/* TODO */}
       <div className="flex flex-row -ml-20">
         {images.map((image, idx) => (
           <motion.div
             variants={imageVariants}
             key={"images-first" + idx}
             style={{
-              rotate: Math.random() * 20 - 10,
+              rotate: rotationAngles[idx % rotationAngles.length],
             }}
             whileHover="whileHover"
             whileTap="whileTap"
@@ -203,7 +204,7 @@ export const SkeletonTwo = () => {
           <motion.div
             key={"images-second" + idx}
             style={{
-              rotate: Math.random() * 20 - 10,
+              rotate: rotationAngles[(idx + 2) % rotationAngles.length],
             }}
             variants={imageVariants}
             whileHover="whileHover"

@@ -2,6 +2,7 @@
 import type { ReactNode } from "react";
 import { motion, type Variants } from "motion/react";
 import React from "react";
+import type { ComponentType } from "react";
 
 export type PresetType =
   | "fade"
@@ -23,8 +24,8 @@ export type AnimatedGroupProps = {
     item?: Variants;
   };
   preset?: PresetType;
-  as?: React.ElementType;
-  asChild?: React.ElementType;
+  as?: string | ComponentType<unknown>;
+  asChild?: string | ComponentType<unknown>;
 };
 
 const defaultContainerVariants: Variants = {
@@ -116,11 +117,11 @@ function AnimatedGroup({
   const itemVariants = variants?.item || selectedVariants.item;
 
   const MotionComponent = React.useMemo(
-    () => motion.create(as as keyof JSX.IntrinsicElements),
+    () => (typeof as === "string" ? motion.div : motion(as)),
     [as]
   );
   const MotionChild = React.useMemo(
-    () => motion.create(asChild as keyof JSX.IntrinsicElements),
+    () => (typeof asChild === "string" ? motion.div : motion(asChild)),
     [asChild]
   );
 
