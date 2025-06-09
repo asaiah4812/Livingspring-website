@@ -14,7 +14,7 @@ const About = ({img, style}:{img:string; style:string;}) => {
         </h2>
         <em>To Establish the Kingdom of God here on Earth.</em>
         <p className="pb-5">
-          This was the mandate given to David Ibiyeomie that manifested as the
+          This was the mandate given to Rev Kenneth Eze that manifested as the
           Commission, Salvation Ministries, on the 13th of April, 1997. From a
           little over 30 persons in attendance at the first gathering, the
           Commission has become an ever-growing global family of believers who
